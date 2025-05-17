@@ -70,13 +70,14 @@ const fetchYad2Listings3 = async (url) => {
 
         const listings = [];
         $('#__next ul li').each((index, element) => {
-            const title = $(element).find('.item-data-content_heading__tphH4').text().trim() || 'No title';
-            const price = $(element).find('span.price_price__xQt90').text().trim() || 'No price';
+            const title = $(element).find('h3').text().trim() || 'No title';
+            const price = $(element).find('div[data-testid="item-price"]').text().trim() || 'No price';
             const relativeLink = $(element).find('a').attr('href') || 'No link';
             const link = relativeLink.startsWith('http') ? relativeLink : `${BASE_URL}${relativeLink}`;
 
             listings.push({ title, price, link });
         });
+    
         return listings;
     } catch (error) {
         console.error(`Error fetching Yad2 listings from URL: ${url}`, error);
