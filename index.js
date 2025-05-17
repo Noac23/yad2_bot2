@@ -122,22 +122,29 @@ const fetchYad2Listings = async (url) => {
 
 // Function to save a listing to the database
 const saveListing = async (listing) => {
+    // הדפסה לצורך בדיקה
     console.log("🔍 Trying to save listing:", listing);
-    if (listing.price !== 'No price' && listing.title !== 'No title') 
-    {
+
+    // רק אם יש כתובת (title) – ננסה לשמור
+    if (listing.title !== 'No title') {
         try {
-        await Listing.create(listing);
-        return true;
-    } catch (error) {
-        if (error.code === 11000) {
-            
-        } else {
-            console.error("Error saving listing:", error);
+            await Listing.create(listing);
+            console.log("✅ Saved listing:", listing.title);
+            return true;
+        } catch (error) {
+            if (error.code === 11000) {
+                console.warn("⚠️ Duplicate listing skipped:", listing.link);
+            } else {
+                console.error("❌ Error saving listing:", error);
+            }
+            return false;
         }
+    } else {
+        console.warn("⛔ Skipping listing with no title:", listing.link);
         return false;
     }
-}
 };
+
 
 // Main function to periodically check for new listings
 const main = async () => {
