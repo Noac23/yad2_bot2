@@ -121,6 +121,7 @@ const fetchYad2Listings = async (url) => {
 
 // Function to save a listing to the database
 const saveListing = async (listing) => {
+    console.log("🔍 Trying to save listing:", listing);
     if (listing.price !== 'No price' && listing.title !== 'No title') 
     {
         try {
